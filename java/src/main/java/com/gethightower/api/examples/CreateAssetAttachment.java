@@ -4,9 +4,9 @@ import java.io.*;
 import com.mashape.unirest.http.*;
 import com.mashape.unirest.http.exceptions.*;
 
-public class UploadFile {
+public class CreateAssetAttachment {
 
-	public void uploadFile(String assetId, String fileDescription, File file) throws UnirestException {
+	public void createAssetAttachment(String assetId, String fileDescription, File file) throws UnirestException {
 
 		String url = String.format("https://%s/api/external/v1/assets/%s/attachments", Configuration.HOST, assetId);
 
@@ -30,14 +30,14 @@ public class UploadFile {
 
 	public static void main(String[] args) throws UnirestException {
 
-		UploadFile uploadFile = new UploadFile();
+		CreateAssetAttachment me = new CreateAssetAttachment();
 
 		if (args.length != 3) {
 			System.err.println("usage: UploadFile <asset-id> <file-description> <file-path>");
 			System.exit(1);
 		}
 
-		uploadFile.uploadFile(args[0], args[1], new File(args[2]));
+		me.createAssetAttachment(args[0], args[1], new File(args[2]));
 
 	}
 
