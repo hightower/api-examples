@@ -2,14 +2,14 @@
 Getting Started
 ===============
 
-* Install the JDK and (Maven)[https://maven.apache.org/install.html]
+* Install the JDK and [Maven](https://maven.apache.org/install.html)
 * Update `src/main/java/com/gethightower/api/examples/Configuration.java` with your API credentials.
 * Run `mvn -q compile`
 
 Creating Asset Attachment
 =========================
 
-Run the following (changing `asset_id` to a valid asset ID in your environment.)
+Run the following (with a valid `asset_id` for your account.)
 
 ```sh
 asset_id=1234
