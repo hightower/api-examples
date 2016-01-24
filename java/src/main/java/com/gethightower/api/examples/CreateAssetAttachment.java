@@ -33,7 +33,7 @@ public class CreateAssetAttachment {
 		CreateAssetAttachment me = new CreateAssetAttachment();
 
 		if (args.length != 3) {
-			System.err.println("usage: UploadFile <asset-id> <file-description> <file-path>");
+			System.err.println("usage: CreateAssetAttachment <asset-id> <file-description> <file-path>");
 			System.exit(1);
 		}
 
