@@ -26,19 +26,19 @@ public class ShowDealPipeline {
 
 		JSONArray assets = body.getArray();
 
-		System.err.println(String.format("%d assets with deals modified in previous 7 days", assets.length()));
+		System.out.println(String.format("%d assets with deals modified in previous 7 days", assets.length()));
 
 		for (int i = 0; i < assets.length(); i++) {
 			JSONObject asset = assets.getJSONObject(i);
 			JSONArray deals = asset.getJSONArray("deals");
 
-			System.err.println(String.format("asset: %s (ID: %d)", asset.getString("name"), asset.getInt("id")));
+			System.out.println(String.format("asset: %s (ID: %d)", asset.getString("name"), asset.getInt("id")));
 
 			for (int j = 0; j < deals.length(); j++) {
 				JSONObject deal = deals.getJSONObject(j);
 				JSONObject dealStage = deal.getJSONObject("deal_stage");
 
-				System.err.println(String.format("  deal: %s/%s (ID: %d)", deal.getString("tenant_name"), dealStage.getString("description"), deal.getInt("id")));
+				System.out.println(String.format("  deal: %s/%s (ID: %d)", deal.getString("tenant_name"), dealStage.getString("description"), deal.getInt("id")));
 			}
 		}
 	}
