@@ -1,8 +1,11 @@
 package com.gethightower;
 
-import java.io.*;
-import com.mashape.unirest.http.*;
-import com.mashape.unirest.http.exceptions.*;
+import java.io.File;
+
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class CreateAssetAttachment {
 
