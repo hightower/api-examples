@@ -12,6 +12,8 @@ import com.mashape.unirest.request.HttpRequestWithBody;
 import org.json.JSONObject;
 
 public abstract class APIExample {
+    private static final String API_VERSION = "v1";
+
     public void run(String[] args) throws UnirestException {
         try {
             doRun(args);
@@ -25,7 +27,7 @@ public abstract class APIExample {
 
     protected String buildUrl(String path) {
         String scheme = Configuration.SSL ? "https" : "http";
-        return String.format("%s://%s/v1/%s", scheme, Configuration.HOST, path);
+        return String.format("%s://%s/%s/%s", scheme, Configuration.HOST, API_VERSION, path);
     }
 
     protected JSONObject executeHttpGet(String path, Map<String, Object> parameters) throws UnirestException, APIException {
