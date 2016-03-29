@@ -21,17 +21,24 @@ public class CreateAssetAttachment extends APIExample {
             System.exit(1);
         }
 
-        String assetId = args[0];
+        int assetId = -1;
         String fileDescription = args[1];
         String filepath = args[2];
+
+        try {
+            assetId = Integer.parseInt(args[0]);
+        } catch (NumberFormatException ex) {
+            System.err.println("assetId must be an integer");
+            System.exit(1);
+        }
 
         JSONObject attachment = createAssetAttachment(assetId, fileDescription, new File(filepath));
 
         System.out.println(String.format("Created asset attachment '%d'", attachment.getInt("id")));
     }
 
-	private JSONObject createAssetAttachment(String assetId, String fileDescription, File file) throws UnirestException, APIException {
-        String path = String.format("assets/%s/attachments", assetId);
+	private JSONObject createAssetAttachment(int assetId, String fileDescription, File file) throws UnirestException, APIException {
+        String path = String.format("assets/%d/attachments", assetId);
 
         Map<String, Object> fields = new HashMap<String, Object>();
         fields.put("file_description", fileDescription);
