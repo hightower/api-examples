@@ -1,4 +1,4 @@
-package com.gethightower.api.examples;
+package com.gethightower;
 
 public class Configuration {
 	final static String HOST = "integrations-sandbox.gethightower.com";

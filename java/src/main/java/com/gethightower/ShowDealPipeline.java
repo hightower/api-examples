@@ -1,6 +1,5 @@
-package com.gethightower.api.examples;
+package com.gethightower;
 
-import java.io.*;
 import org.json.*;
 import com.mashape.unirest.http.*;
 import com.mashape.unirest.http.exceptions.*;

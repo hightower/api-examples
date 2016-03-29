@@ -1,4 +1,4 @@
-package com.gethightower.api.examples;
+package com.gethightower;
 
 import java.io.*;
 import com.mashape.unirest.http.*;
