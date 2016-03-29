@@ -4,28 +4,19 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.mashape.unirest.request.HttpRequest;
-import com.mashape.unirest.request.HttpRequestWithBody;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class CreateSpaceAttachmentWithClientIds {
+public class CreateSpaceAttachmentWithClientIds extends APIExample {
 
     public static void main(String[] args) throws UnirestException {
-        try {
-            new CreateSpaceAttachmentWithClientIds().run(args);
-        } catch (APIException ex) {
-            System.err.println(String.format("The Hightower API returned an error (%d): %s", ex.getHttpStatusCode(), ex.getMessage()));
-            System.exit(1);
-        }
+        new CreateSpaceAttachmentWithClientIds().run(args);
     }
 
-    public void run(String[] args) throws APIException, UnirestException {
+    @Override
+    public void doRun(String[] args) throws APIException, UnirestException {
         if (args.length != 4) {
             System.err.println("Four arguments required: clientAssetId, clientSpaceId, fileDescription, filepath");
             System.exit(1);
@@ -122,39 +113,5 @@ public class CreateSpaceAttachmentWithClientIds {
         fields.put("file", file);
 
         return executeHttpPost(path, fields);
-    }
-
-    private String buildUrl(String path) {
-        return String.format("http://%s/v1/%s", Configuration.HOST, path);
-    }
-
-    private JSONObject executeHttpGet(String path, Map<String, Object> parameters) throws UnirestException, APIException {
-        HttpRequest request = Unirest.get(buildUrl(path));
-        request.queryString(parameters);
-        return executeHttp(request);
-    }
-
-    private JSONObject executeHttpPost(String path, Map<String, Object> fields) throws UnirestException, APIException {
-        HttpRequestWithBody request = Unirest.post(buildUrl(path));
-        request.fields(fields);
-        return executeHttp(request);
-    }
-
-    private JSONObject executeHttp(HttpRequest request) throws UnirestException, APIException {
-        HttpResponse<JsonNode> response = request.header("Accept", "application/json")
-            .basicAuth(Configuration.API_KEY, Configuration.API_SECRET)
-            .asJson();
-
-        JSONObject rootJSONObject = response.getBody().getObject();
-
-        if (rootJSONObject == null) {
-            throw new RuntimeException("Server returned a malformatted JSON object");
-        }
-
-        if (response.getStatus() < 200 || response.getStatus() >= 300) {
-            throw new APIException(response.getStatus(), rootJSONObject.getString("error"));
-        }
-
-        return rootJSONObject;
     }
 }
