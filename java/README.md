@@ -20,9 +20,10 @@ mvn -q compile exec:java \
 ## Creating Space Attachment With Client IDs
 
 ```sh
-client_asset_id=1234
-client_space_id=5678
+client_asset_id=123
+client_building_id=456
+client_space_id=789
 mvn -q compile exec:java \
 	-Dexec.mainClass="com.gethightower.CreateSpaceAttachmentWithClientIds" \
-	-Dexec.args="$client_asset_id $client_space_id FLOORPLAN src/main/resources/floorplan.pdf"
+	-Dexec.args="$client_asset_id $client_building_id $client_space_id FLOORPLAN src/main/resources/floorplan.pdf"
 ```

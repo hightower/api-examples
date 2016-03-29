@@ -17,15 +17,16 @@ public class CreateSpaceAttachmentWithClientIds extends APIExample {
 
     @Override
     public void doRun(String[] args) throws APIException, UnirestException {
-        if (args.length != 4) {
-            System.err.println("Four arguments required: clientAssetId, clientSpaceId, fileDescription, filepath");
+        if (args.length != 5) {
+            System.err.println("Required arguments: clientAssetId, clientBuildingId, clientSpaceId, fileDescription, filepath");
             System.exit(1);
         }
 
         String clientAssetId = args[0];
-        String clientSpaceId = args[1];
-        String fileDescription = args[2];
-        File file = new File(args[3]);
+        String clientBuildingId = args[1];
+        String clientSpaceId = args[2];
+        String fileDescription = args[3];
+        File file = new File(args[4]);
 
         JSONObject asset = findAsset(clientAssetId);
 
@@ -34,16 +35,23 @@ public class CreateSpaceAttachmentWithClientIds extends APIExample {
             return;
         }
 
-        JSONObject space = findSpace(asset.getInt("id"), clientSpaceId);
+        int buildingId = translateClientBuildingId(asset.getJSONArray("buildings"), clientBuildingId);
+
+        if (buildingId < 0) {
+            System.out.println(String.format("No building '%s' in asset '%s'", clientBuildingId, clientAssetId));
+            return;
+        }
+
+        JSONObject space = findSpace(asset.getInt("id"), buildingId, clientSpaceId);
 
         if (space == null) {
-            System.out.println(String.format("No space '%s' in asset '%s'", clientSpaceId, clientAssetId));
+            System.out.println(String.format("No space '%s' in building '%s' in asset '%s'", clientSpaceId, clientBuildingId, clientAssetId));
             return;
         }
 
         JSONObject attachment = createSpaceAttachment(space.getInt("id"), file, fileDescription);
 
-        String message = String.format("Created attachment '%d' on space '%s' in asset '%s'", attachment.getInt("id"), clientSpaceId, clientAssetId);
+        String message = String.format("Created attachment '%d' on space '%s' in building '%s' in asset '%s'", attachment.getInt("id"), clientSpaceId, clientBuildingId, clientAssetId);
         System.out.println(message);
     }
 
@@ -76,7 +84,7 @@ public class CreateSpaceAttachmentWithClientIds extends APIExample {
         return null;
     }
 
-    private JSONObject findSpace(int assetId, String clientSpaceId) throws UnirestException, APIException {
+    private JSONObject findSpace(int assetId, int buildingId, String clientSpaceId) throws UnirestException, APIException {
         int currentPage = 1;
         int totalPages;
 
@@ -92,8 +100,12 @@ public class CreateSpaceAttachmentWithClientIds extends APIExample {
             for (int i = 0; i < spaces.length(); i++) {
                 JSONObject space = spaces.getJSONObject(i);
 
-                if (!space.isNull("client_space_id") && space.getString("client_space_id").equals(clientSpaceId)) {
-                    return space;
+                if (!space.isNull("client_space_id")) {
+                    if (space.getString("client_space_id").equals(clientSpaceId)) {
+                        if (space.getInt("building_id") == buildingId) {
+                            return space;
+                        }
+                    }
                 }
             }
 
@@ -113,5 +125,19 @@ public class CreateSpaceAttachmentWithClientIds extends APIExample {
         fields.put("file", file);
 
         return executeHttpPost(path, fields);
+    }
+
+    private int translateClientBuildingId(JSONArray buildings, String clientBuildingId) {
+        for (int i = 0; i < buildings.length(); ++i) {
+            JSONObject building = buildings.getJSONObject(i);
+
+            if (!building.isNull("client_building_id")) {
+                if (building.getString("client_building_id").equals(clientBuildingId)) {
+                    return building.getInt("id");
+                }
+            }
+        }
+
+        return -1;
     }
 }
