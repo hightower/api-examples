@@ -1,43 +1,42 @@
 package com.gethightower;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-public class CreateAssetAttachment {
+import org.json.JSONObject;
 
-	public void createAssetAttachment(String assetId, String fileDescription, File file) throws UnirestException {
-		String url = String.format("https://%s/v1/assets/%s/attachments", Configuration.HOST, assetId);
+public class CreateAssetAttachment extends APIExample {
 
-		HttpResponse<JsonNode> response = Unirest.post(url)
-			.header("accept", "application/json")
-			.field("file_description", fileDescription)
-			.field("file", file)
-			.basicAuth(Configuration.API_KEY, Configuration.API_SECRET)
-			.asJson();
+    public static void main(String[] args) throws UnirestException {
+        new CreateAssetAttachment().run(args);
+    }
 
-		JsonNode body = response.getBody();
+    @Override
+    public void doRun(String[] args) throws APIException, UnirestException {
+        if (args.length != 3) {
+            System.err.println("Three arguments required: assetId fileDescription filepath");
+            System.exit(1);
+        }
 
-		if (response.getStatus() != 201) {
-			System.err.println(String.format("Attachment create failed (HTTP %s)", response.getStatus()));
-			System.err.println(body);
-		} else {
-			System.err.println(String.format("Attachment create succeeded (ID %s)", body.getObject().getInt("id")));
-		}
-	}
+        String assetId = args[0];
+        String fileDescription = args[1];
+        String filepath = args[2];
 
-	public static void main(String[] args) throws UnirestException {
+        JSONObject attachment = createAssetAttachment(assetId, fileDescription, new File(filepath));
 
-		CreateAssetAttachment me = new CreateAssetAttachment();
+        System.out.println(String.format("Created asset attachment '%d'", attachment.getInt("id")));
+    }
 
-		if (args.length != 3) {
-			System.err.println("usage: CreateAssetAttachment <asset-id> <file-description> <file-path>");
-			System.exit(1);
-		}
+	private JSONObject createAssetAttachment(String assetId, String fileDescription, File file) throws UnirestException, APIException {
+        String path = String.format("assets/%s/attachments", assetId);
 
-		me.createAssetAttachment(args[0], args[1], new File(args[2]));
+        Map<String, Object> fields = new HashMap<String, Object>();
+        fields.put("file_description", fileDescription);
+        fields.put("file", file);
+
+        return executeHttpPost(path, fields);
 	}
 }
