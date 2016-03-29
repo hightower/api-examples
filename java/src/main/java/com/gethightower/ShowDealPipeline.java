@@ -7,7 +7,6 @@ import com.mashape.unirest.http.exceptions.*;
 public class ShowDealPipeline {
 
 	public void showDealPipeline() throws UnirestException {
-
 		String url = String.format("https://%s/api/exports/v2/deal_pipeline.json", Configuration.HOST);
 
 		HttpResponse<JsonNode> response = Unirest.get(url)
@@ -42,13 +41,8 @@ public class ShowDealPipeline {
 		}
 	}
 
-
 	public static void main(String[] args) throws UnirestException {
-
 		ShowDealPipeline me = new ShowDealPipeline();
-
 		me.showDealPipeline();
-
 	}
-
 }
