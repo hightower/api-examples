@@ -5,7 +5,7 @@
   <artifactId>api-examples</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>api-examples</name>
+  <name>Hightower API Examples</name>
   <url>http://developers.gethightower.com</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
