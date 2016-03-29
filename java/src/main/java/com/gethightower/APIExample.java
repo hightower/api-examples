@@ -24,7 +24,8 @@ public abstract class APIExample {
     protected abstract void doRun(String[] args) throws APIException, UnirestException;
 
     protected String buildUrl(String path) {
-        return String.format("http://%s/v1/%s", Configuration.HOST, path);
+        String scheme = Configuration.SSL ? "https" : "http";
+        return String.format("%s://%s/v1/%s", scheme, Configuration.HOST, path);
     }
 
     protected JSONObject executeHttpGet(String path, Map<String, Object> parameters) throws UnirestException, APIException {
