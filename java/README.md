@@ -24,5 +24,5 @@ client_asset_id=1234
 client_space_id=5678
 mvn -q compile exec:java \
 	-Dexec.mainClass="com.gethightower.CreateSpaceAttachmentWithClientIds" \
-	-Dexec.args="$client_asset_id $client_space_id FLOORPLAN src/main/resources/flyer.pdf"
+	-Dexec.args="$client_asset_id $client_space_id FLOORPLAN src/main/resources/floorplan.pdf"
 ```
