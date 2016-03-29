@@ -37,7 +37,7 @@ public class CreateAssetAttachment extends APIExample {
         System.out.println(String.format("Created asset attachment '%d'", attachment.getInt("id")));
     }
 
-	private JSONObject createAssetAttachment(int assetId, String fileDescription, File file) throws UnirestException, APIException {
+    private JSONObject createAssetAttachment(int assetId, String fileDescription, File file) throws UnirestException, APIException {
         String path = String.format("assets/%d/attachments", assetId);
 
         Map<String, Object> fields = new HashMap<String, Object>();
@@ -45,5 +45,5 @@ public class CreateAssetAttachment extends APIExample {
         fields.put("file", file);
 
         return executeHttpPost(path, fields);
-	}
+    }
 }
